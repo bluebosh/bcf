@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -o errexit -o nounset
+
+GIT_ROOT=${GIT_ROOT:-$(git rev-parse --show-toplevel)}
+NAMESPACE="cf"
+
+source bin/settings/settings.env
+source bin/settings/network.env
+
+helm upgrade $1 helm \
+     --namespace ${NAMESPACE} \
+     --set "env.CLUSTER_ADMIN_PASSWORD=$CLUSTER_ADMIN_PASSWORD" \
+     --set "env.DOMAIN=${DOMAIN}" \
+     --set "env.UAA_ADMIN_CLIENT_SECRET=${UAA_ADMIN_CLIENT_SECRET}" \
+     --set "env.UAA_HOST=${UAA_HOST}" \
+     --set "env.UAA_PORT=${UAA_PORT}" \
+     --recreate-pods \
+     --force

@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+set -o errexit -o nounset
+
+GIT_ROOT=${GIT_ROOT:-$(git rev-parse --show-toplevel)}
+NAMESPACE="cf"
+
+has_namespace() {
+    kubectl get namespace --output=name "${NAMESPACE}" >/dev/null 2>/dev/null
+}
+
+stampy "${GIT_ROOT}/scf_metrics.csv" "$0" make-run start
+
+stampy "${GIT_ROOT}/scf_metrics.csv" "$0" make-run::namespace start
+if has_namespace ; then
+    kubectl delete namespace "${NAMESPACE}"
+fi
+
+printf "Waiting for namespace %s to be deleted...\n" "${NAMESPACE}"
+while has_namespace ; do
+    sleep 1
+done
+
+kubectl create namespace "${NAMESPACE}"
+stampy "${GIT_ROOT}/scf_metrics.csv" "$0" make-run::namespace end
+
+stampy "${GIT_ROOT}/scf_metrics.csv" "$0" make-run::create start
+
+#kubectl get storageclass persistent 2>/dev/null || {
+#    perl -p -e 's@storage.k8s.io/v1beta1@storage.k8s.io/v1@g' \
+#        "${GIT_ROOT}/src/uaa-fissile-release/kube-test/storage-class-host-path.yml" | \
+#    kubectl create -f -
+#}
+
+source bin/settings/settings.env
+source bin/settings/network.env
+
+helm install helm \
+     --namespace ${NAMESPACE} \
+     --set "env.CLUSTER_ADMIN_PASSWORD=$CLUSTER_ADMIN_PASSWORD" \
+     --set "env.DOMAIN=${DOMAIN}" \
+     --set "env.UAA_ADMIN_CLIENT_SECRET=${UAA_ADMIN_CLIENT_SECRET}" \
+     --set "env.UAA_HOST=${UAA_HOST}" \
+     --set "env.UAA_PORT=${UAA_PORT}"
+
+stampy "${GIT_ROOT}/scf_metrics.csv" "$0" make-run::create end
+
+stampy "${GIT_ROOT}/scf_metrics.csv" "$0" make-run 'done'

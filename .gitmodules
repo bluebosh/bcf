@@ -1,0 +1,72 @@
+[submodule "src/diego-release"]
+	path = src/diego-release
+	url = https://github.com/cloudfoundry-incubator/diego-release.git
+[submodule "src/etcd-release"]
+	path = src/etcd-release
+	url = https://github.com/cloudfoundry-incubator/etcd-release
+[submodule "src/cflinuxfs2-release"]
+	path = src/cflinuxfs2-release
+	url = https://github.com/cloudfoundry/cflinuxfs2-release.git
+[submodule "src/routing-release"]
+	path = src/routing-release
+	url = https://github.com/cloudfoundry-incubator/routing-release.git
+[submodule "src/garden-runc-release"]
+	path = src/garden-runc-release
+	url = https://github.com/cloudfoundry/garden-runc-release.git
+[submodule "src/hcf-release/src/certstrap"]
+	path = src/hcf-release/src/certstrap
+	url = https://github.com/hpcloud/certstrap
+[submodule "src/nats-release"]
+	path = src/nats-release
+	url = https://github.com/cloudfoundry/nats-release.git
+[submodule "src/consul-release"]
+	path = src/consul-release
+	url = https://github.com/cloudfoundry-incubator/consul-release.git
+[submodule "src/loggregator"]
+	path = src/loggregator
+	url = https://github.com/cloudfoundry/loggregator.git
+[submodule "src/capi-release"]
+	path = src/capi-release
+	url = https://github.com/cloudfoundry/capi-release.git
+[submodule "src/grootfs-release"]
+	path = src/grootfs-release
+	url = https://github.com/cloudfoundry/grootfs-release.git
+[submodule "src/hcf-release/src/github.com/cloudfoundry/cf-acceptance-tests"]
+	path = src/hcf-release/src/github.com/cloudfoundry/cf-acceptance-tests
+	url = https://github.com/cloudfoundry/cf-acceptance-tests
+[submodule "src/hcf-release/src/smoke-tests"]
+	path = src/hcf-release/src/smoke-tests
+	url = https://github.com/cloudfoundry/cf-smoke-tests.git
+[submodule "src/hcf-release/src/github.com/suse/testbrain"]
+	path = src/hcf-release/src/github.com/suse/testbrain
+	url = https://github.com/SUSE/testbrain.git
+[submodule "src/uaa-fissile-release"]
+	path = src/uaa-fissile-release
+	url = https://github.com/SUSE/uaa-fissile-release
+[submodule "src/postgres-release"]
+	path = src/postgres-release
+	url = https://github.com/cloudfoundry/postgres-release
+[submodule "src/buildpacks/java-buildpack-release"]
+	path = src/buildpacks/java-buildpack-release
+	url = https://github.com/cloudfoundry/java-buildpack-release
+[submodule "src/buildpacks/binary-buildpack-release"]
+	path = src/buildpacks/binary-buildpack-release
+	url = https://github.com/cloudfoundry/binary-buildpack-release
+[submodule "src/buildpacks/go-buildpack-release"]
+	path = src/buildpacks/go-buildpack-release
+	url = https://github.com/cloudfoundry/go-buildpack-release
+[submodule "src/buildpacks/nodejs-buildpack-release"]
+	path = src/buildpacks/nodejs-buildpack-release
+	url = https://github.com/cloudfoundry/nodejs-buildpack-release
+[submodule "src/buildpacks/php-buildpack-release"]
+	path = src/buildpacks/php-buildpack-release
+	url = https://github.com/cloudfoundry/php-buildpack-release
+[submodule "src/buildpacks/python-buildpack-release"]
+	path = src/buildpacks/python-buildpack-release
+	url = https://github.com/cloudfoundry/python-buildpack-release
+[submodule "src/buildpacks/ruby-buildpack-release"]
+	path = src/buildpacks/ruby-buildpack-release
+	url = https://github.com/cloudfoundry/ruby-buildpack-release
+[submodule "src/buildpacks/staticfile-buildpack-release"]
+	path = src/buildpacks/staticfile-buildpack-release
+	url = https://github.com/cloudfoundry/staticfile-buildpack-release

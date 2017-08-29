@@ -1,0 +1,341 @@
+---
+properties:
+  acceptance_tests:
+    admin_user: admin
+    skip_ssl_validation: true
+    backend: diego
+    include_apps: true
+    include_detect: true
+    include_diego_ssh: true
+    include_diego_docker: true
+    include_security_groups: true
+    include_internet_dependent: true
+    include_routing: true
+    include_services: true
+    async_service_operation_timeout: 5
+    broker_start_timeout: 10
+    cf_push_timeout: 5
+    default_timeout: 300
+    long_curl_timeout: 5
+  acceptance_tests_brain:
+    user: admin
+    org: test-brain-org
+    space: test-brain-space
+  capi:
+    nsync:
+      lifecycle_bundles:
+        - "buildpack/cflinuxfs2:buildpack_app_lifecycle/buildpack_app_lifecycle.tgz"
+        - "docker:docker_app_lifecycle/docker_app_lifecycle.tgz"
+    stager:
+      lifecycle_bundles:
+        - "buildpack/cflinuxfs2:buildpack_app_lifecycle/buildpack_app_lifecycle.tgz"
+        - "docker:docker_app_lifecycle/docker_app_lifecycle.tgz"
+  cc:
+    broker_client_timeout_seconds: 70
+    buildpacks:
+      fog_connection:
+        connection_options:
+          ssl_version: TLSv1
+        openstack_api_key: 7eab8fbfcdda3249e780dce0b10c7e4794e5ccd0fc9af7221b9fa9b40924ba8a
+        openstack_auth_url: https://lon02.objectstorage.service.networklayer.com/auth/v1.0/
+        openstack_temp_url_key: 4ks3hl3g-342d-g343-22dd-3dfs36sgsvv3
+        openstack_username: IBMOS278444-33:cuixuex@cn.ibm.com
+        provider: OpenStack
+    client_max_body_size: 15M
+    default_running_security_groups:
+    - public_networks
+    - dns
+    default_staging_security_groups:
+    - public_networks
+    - dns
+    default_to_diego_backend: true
+    droplets:
+      fog_connection:
+        connection_options:
+          ssl_version: TLSv1
+        openstack_api_key: 7eab8fbfcdda3249e780dce0b10c7e4794e5ccd0fc9af7221b9fa9b40924ba8a
+        openstack_auth_url: https://lon02.objectstorage.service.networklayer.com/auth/v1.0/
+        openstack_temp_url_key: 4ks3hl3g-342d-g343-22dd-3dfs36sgsvv3
+        openstack_username: IBMOS278444-33:cuixuex@cn.ibm.com
+        provider: OpenStack
+    external_protocol: http
+    install_buildpacks:
+    - name: staticfile_buildpack
+      package: staticfile-buildpack
+    - name: java_buildpack
+      package: java-buildpack
+    - name: java_offline_buildpack
+      package: java-offline-buildpack
+    - name: ruby_buildpack
+      package: ruby-buildpack
+    - name: nodejs_buildpack
+      package: nodejs-buildpack
+    - name: go_buildpack
+      package: go-buildpack
+    - name: python_buildpack
+      package: python-buildpack
+    - name: php_buildpack
+      package: php-buildpack
+    - name: binary_buildpack
+      package: binary-buildpack
+    - name: cf_iis_buildpack
+      package: cf_iis_buildpack
+    jobs:
+      generic:
+        number_of_workers: null
+    newrelic:
+      environment_name: null
+      transaction_tracer:
+        enabled: true
+        record_sql: obfuscated
+    packages:
+      fog_connection:
+        connection_options:
+          ssl_version: TLSv1
+        openstack_api_key: 7eab8fbfcdda3249e780dce0b10c7e4794e5ccd0fc9af7221b9fa9b40924ba8a
+        openstack_auth_url: https://lon02.objectstorage.service.networklayer.com/auth/v1.0/
+        openstack_temp_url_key: 4ks3hl3g-342d-g343-22dd-3dfs36sgsvv3
+        openstack_username: IBMOS278444-33:cuixuex@cn.ibm.com
+        provider: OpenStack
+    quota_definitions:
+      default:
+        memory_limit: 10240
+        non_basic_services_allowed: true
+        total_routes: 1000
+        total_services: 100
+    resource_pool:
+      fog_connection:
+        connection_options:
+          ssl_version: TLSv1
+        openstack_api_key: 7eab8fbfcdda3249e780dce0b10c7e4794e5ccd0fc9af7221b9fa9b40924ba8a
+        openstack_auth_url: https://lon02.objectstorage.service.networklayer.com/auth/v1.0/
+        openstack_temp_url_key: 4ks3hl3g-342d-g343-22dd-3dfs36sgsvv3
+        openstack_username: IBMOS278444-33:cuixuex@cn.ibm.com
+        provider: OpenStack
+    security_event_logging:
+      enabled: null
+    security_group_definitions:
+    - name: public_networks
+      rules:
+      - destination: 0.0.0.0-9.255.255.255
+        protocol: all
+      - destination: 11.0.0.0-169.253.255.255
+        protocol: all
+      - destination: 169.255.0.0-172.15.255.255
+        protocol: all
+      - destination: 172.32.0.0-192.167.255.255
+        protocol: all
+      - destination: 192.169.0.0-255.255.255.255
+        protocol: all
+    - name: dns
+      rules:
+      - destination: 0.0.0.0/0
+        ports: "53"
+        protocol: tcp
+      - destination: 0.0.0.0/0
+        ports: "53"
+        protocol: udp
+    staging_upload_user: staging_user
+    system_hostnames:
+    - api
+    - blobstore
+    - doppler
+    - loggregator
+    - login
+    - uaa
+    - usb
+    thresholds:
+      api:
+        alert_if_above_mb: null
+        restart_if_above_mb: null
+        restart_if_consistently_above_mb: null
+      worker:
+        alert_if_above_mb: null
+        restart_if_above_mb: null
+        restart_if_consistently_above_mb: null
+    core_file_pattern: false
+    volume_services_enabled: true
+  ccdb:
+    databases:
+    - name: ccdb
+      tag: cc
+    db_scheme: postgresql
+  diego:
+    bbs:
+      active_key_label: active
+      etcd:
+        machines: []
+      sql:
+        db_driver: postgres
+        db_username: diego
+        db_schema: diego
+        max_open_connections: 500
+    executor:
+      garden:
+        address: 127.0.0.1:7777
+        network: tcp
+    file_server:
+      static_directory: /var/vcap/packages/
+    rep:
+      evacuation_timeout_in_seconds: 60
+      preloaded_rootfses:
+        - cflinuxfs2:/var/vcap/packages/cflinuxfs2/rootfs.tar
+    route_emitter:
+      nats:
+        user: nats
+    ssh_proxy:
+      enable_cf_auth: true
+  databases:
+    databases:
+    - {name: ccdb, tag: cc, citext: true}
+    - {name: diego, tag: diego, citext: true}
+    - {name: routing-api, tag: routing-api, citext: true}
+  doppler:
+    locked_memory_limit: kernel
+    port: 4443
+  etcd:
+    bootstrap_node: etcd-0
+  garden:
+    # By default we want to restrict all outbound access from containers
+    # so they can't access the CF network, or other apps. Traffic to the
+    # internet and services is configured using proper CF security group
+    # rules.
+    deny_networks: [0.0.0.0/0]
+    # Garden should at least be able to cache the cflinuxfs2 rootfs
+    # to avoid copy operations on every garden healthcheck from rep
+    # when there is no app running with the healthcheck rootfs.
+    graph_cleanup_threshold_in_mb: 3000
+    listen_address: 0.0.0.0:7777
+    listen_network: tcp
+    persistent_image_list:
+    - /var/vcap/packages/cflinuxfs2/rootfs.tar
+    image_plugin: "/var/vcap/packages/grootfs/bin/grootfs"
+    image_plugin_extra_args:
+    - --config=/var/vcap/jobs/grootfs/config/grootfs_config.yml
+    # if we have capi.nsync.diego_privileged_containers and
+    # capi.stager.diego_privileged_containers set to true, the following 2
+    # properties need to be set
+    privileged_image_plugin: "/var/vcap/packages/grootfs/bin/grootfs"
+    privileged_image_plugin_extra_args:
+    - --config=/var/vcap/jobs/grootfs/config/privileged_grootfs_config.yml
+  grootfs:
+    graph_cleanup_threshold_in_mb: 3000
+    persistent_image_list:
+    - /var/vcap/packages/cflinuxfs2/rootfs.tar
+  fissile:
+    monit:
+      user: "admin"
+      port: 2289
+  hm9000:
+    # Used in cc_ng and cc_worker
+    url: https://this.is.unused
+  metron_agent:
+    deployment: bcf-deployment
+    health_port: 14824
+  nats:
+    port: 4222
+    user: nats
+  router:
+    enable_ssl: true
+    extra_headers_to_log: null
+    logrotate:
+      freq_min: 20
+      rotate: 5
+      size: 3M
+    requested_route_registration_interval_in_seconds: null
+    route_services_timeout: null
+    secure_cookies: null
+    status:
+      user: router_user
+  routing_api:
+    enabled: true
+    sqldb:
+      type: postgres
+      schema: routing-api
+      username: routing-api
+  smoke_tests:
+    user: 'admin'
+    org: smoke-test-org
+    space: smoke-test-space
+    skip_ssl_validation: true
+  syslog_daemon_config:
+    enable: false
+  syslog_drain_binder:
+    locked_memory_limit: kernel
+  system_domain_organization: null
+  tcp_emitter:
+    debug_address: 0.0.0.0:17003
+  traffic_controller:
+    locked_memory_limit: kernel
+  uaa:
+    clients:
+      # Note that these clients are overridden in the dev-only UAA role; that is
+      # instead used to bootstrap the default zone, whereas all of these clients
+      # go into the HCF zone.
+      cc_routing:
+        authorities: routing.router_groups.read
+        authorized-grant-types: client_credentials
+      cf:
+        access-token-validity: 600
+        authorities: uaa.none
+        authorized-grant-types: implicit,password,refresh_token
+        autoapprove: true
+        override: true
+        refresh-token-validity: 2592000
+        scope: cloud_controller.read,cloud_controller.write,openid,password.write,cloud_controller.admin,scim.read,scim.write,doppler.firehose,uaa.user,routing.router_groups.read
+      cloud_controller:
+        authorized-grant-types: client_credentials
+        authorities: scim.read,scim.write,password.write
+        access-token-validity: 604800
+      cloud_controller_username_lookup:
+        authorities: scim.userids
+        authorized-grant-types: client_credentials
+      doppler:
+        authorities: uaa.resource
+        authorized-grant-types: authorization_code,refresh_token
+        override: true
+      gorouter:
+        authorities: clients.read,clients.write,clients.admin,route.admin,route.advertise,routing.routes.read
+        authorized-grant-types: client_credentials,refresh_token
+        scope: openid,cloud_controller_service_permissions.read
+      hcf_auto_config:
+        access-token-validity: 600
+        # Due to CAPS-969, our UAA clients are missing `autoapprove` and `redirect-uri` configs
+        # we need clients.admin to make the necessary changes to UAA
+        # cloud_controller.admin is needed for hcf-release/hcf-set-proxy job
+        authorities: scim.read,scim.write,clients.admin,cloud_controller.admin
+        authorized-grant-types: client_credentials
+      login:
+        authorities: oauth.login,scim.write,clients.read,notifications.write,critical_notifications.write,emails.write,scim.userids,password.write
+        authorized-grant-types: authorization_code,client_credentials,refresh_token
+        autoapprove: true
+        override: true
+        scope: openid,oauth.approvals
+      ssh-proxy:
+        authorized-grant-types: authorization_code
+        autoapprove: true
+        override: true
+        scope: openid,cloud_controller.read,cloud_controller.write,cloud_controller.admin
+      tcp_emitter:
+        authorities: routing.routes.write,routing.routes.read
+        authorized-grant-types: client_credentials,refresh_token
+      tcp_router:
+        authorities: routing.routes.read
+        authorized-grant-types: client_credentials,refresh_token
+    user:
+      authorities:
+      - openid
+      - scim.me
+      - cloud_controller.read
+      - cloud_controller.write
+      - cloud_controller_service_permissions.read
+      - password.write
+      - uaa.user
+      - approvals.me
+      - oauth.approvals
+      - notification_preferences.read
+      - notification_preferences.write
+      - profile
+      - roles
+      - user_attributes
+      - routing.router_groups.read

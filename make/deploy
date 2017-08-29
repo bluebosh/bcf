@@ -1,0 +1,101 @@
+#!/bin/bash
+
+echo
+echo "========== ALL IN ONE INSTALLATION FOR ARMADA START=========="
+echo "[INFO] Please make sure tiller is running by using helm init"
+echo "[INFO] Please make sure workers are configured"
+echo
+
+NEW_IP=$1
+if [[ $NEW_IP = "" ]]; then
+    echo "[ERROR] You must specify your ip as the first argument."
+    exit 1
+fi
+
+DOMAIN=$2
+if [[ $DOMAIN = "" ]]; then
+    echo "[ERROR] You must specify your domain as the second argument."
+    exit 1
+fi
+
+EXECUTE=$3
+if [[ $EXECUTE = "" ]]; then
+    echo "[WARNING] No third argument, just genreate chart yml files but doesn't execute make run"
+else
+    kubectl delete ns cf
+    kubectl delete ns uaa
+    echo "[WARNING] Please make sure there is no any helm release exist, or you have to delete them first:"
+    helm list
+    echo "[INFO] Found the third argument, execute make run in the end."
+
+fi
+
+echo 
+echo "[INFO] Modify cf bin/settings/network.env"
+sed -i "s/^DOMAIN=.*/DOMAIN=$DOMAIN/g" bin/settings/network.env
+sed -i "s/^UAA_HOST=.*/UAA_HOST=uaa.$DOMAIN/g" bin/settings/network.env
+cat bin/settings/network.env
+echo "Done!"
+
+echo
+echo "[INFO] Modify uaa src/uaa-fissile-release/env/defaults.env"
+sed -i "s/^DOMAIN=.*/DOMAIN=$DOMAIN/g" src/uaa-fissile-release/env/defaults.env
+cat src/uaa-fissile-release/env/defaults.env
+echo "Done!"
+
+echo
+echo "[INFO] make certs"
+make certs
+echo "Done!"
+
+echo
+echo "[INFO] make helm"
+make helm
+echo "Done!"
+
+echo
+echo "[INFO] Modify secrets"
+sed -i 's/randAlphaNum 32/default "passw0rd"/g' helm/templates/secret-1.yaml
+sed -i 's/randAlphaNum 32/default "passw0rd"/g' src/uaa-fissile-release/helm/templates/secret-1.yaml
+echo "Done!"
+
+echo
+echo "[INFO] Modify storage-class"
+sed -i "s/volume.beta.kubernetes.io\/storage-class: {{ .Values.kube.storage_class.persistent | quote }}/volume.beta.kubernetes.io\/storage-class: ibmc-file-gold\n        volume.beta.kubernetes.io\/storage-provisioner: ibm.io\/ibmc-file/g" `grep storage: -rl helm/templates/`
+sed -i "s/volume.beta.kubernetes.io\/storage-class: {{ .Values.kube.storage_class.persistent | quote }}/volume.beta.kubernetes.io\/storage-class: ibmc-file-gold\n        volume.beta.kubernetes.io\/storage-provisioner: ibm.io\/ibmc-file/g" `grep storage: -rl src/uaa-fissile-release/helm/templates/`
+grep -rn volume.beta.kubernetes.io helm/templates/
+grep -rn volume.beta.kubernetes.io src/uaa-fissile-release/helm/templates/
+echo "Done!"
+
+echo
+echo "[INFO] Modify IP"
+sed -i "s/192.168.77.77/$NEW_IP/g" `grep 192.168.77.77 -rl helm/`
+sed -i "s/192.168.77.77/$NEW_IP/g" `grep 192.168.77.77 -rl src/uaa-fissile-release/helm/`
+grep -rn $NEW_IP helm/
+grep -rn $NEW_IP src/uaa-fissile-release/helm/
+echo "Done!"
+
+echo
+echo "[INFO] Remove HOSTNAME value"
+sed -i "s/value: {{ .Values.env.HOSTNAME | quote }}//g" `grep "value: {{ .Values.env.HOSTNAME | quote }}" -rl helm/templates`
+echo "Done!"
+
+echo
+if [[ $EXECUTE = "" ]]; then
+    echo "[INFO] Ignore make run"
+else
+    echo "[INFO] Execute make run"
+    make run
+fi
+
+echo
+echo "[INFO] Complete successfully!"
+echo "[INFO] Please wait for about 20mins"
+echo "[INFO] You check if all Pods are running by using kubectl get pods --all-namespaces=true"
+echo "[INFO] Then target and login cf by using:"
+echo "[INFO] cf api --skip-ssl-validation https://api.$2"
+echo "[INFO] cf login -u admin -p changeme"
+echo "========== ALL IN ONE INSTALLATION FOR ARMADA END =========="
+echo
+kubectl get pods --all-namespaces=true
+echo
